@@ -5,6 +5,7 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import java.util.Date;
 
 public class Obra {
+
     private Double avaliacao;
     private Date dataFim;
     private Date dataInicio;
