@@ -1,6 +1,7 @@
 package com.company.ja.trabalhofinal;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -8,54 +9,79 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class MenuActivity extends AppCompatActivity {
+import com.mapbox.mapboxsdk.annotations.BaseMarkerOptions;
+import com.mapbox.mapboxsdk.annotations.Marker;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapquest.mapping.MapQuest;
+import com.mapquest.mapping.maps.MapView;
 
+import java.util.List;
+
+public class MenuActivity extends AppCompatActivity {
+    private MapboxMap map;
+    MapView mMapView;
+    private MapboxMap mMapboxMap;
+    private final LatLng LOCALIZATION_QUIXADA = new LatLng(-4.9607298,-39.0357613);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MapQuest.start(getApplicationContext());
+
         setContentView(R.layout.activity_menu);
+        mMapView = (MapView) findViewById(R.id.mapquestMapView);
+        mMapView.onCreate(savedInstanceState);
 
         Intent intent = new Intent();
 
-        LinearLayout mapa = findViewById(R.id.linearMapa);
-        LinearLayout obras = findViewById(R.id.linearObras);
-        LinearLayout conta = findViewById(R.id.linearConta);
-        LinearLayout melhor = findViewById(R.id.linearMelhores);
-        LinearLayout pior = findViewById(R.id.linearPiores);
-        mapa.setOnClickListener(new View.OnClickListener() {
+        mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
-            public void onClick(View v) {
-                mapa();
+            public void onMapReady(MapboxMap mapboxMap) {
+                mapboxMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LOCALIZATION_QUIXADA, 12));
             }
         });
 
-        obras.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                obras();
-            }
-        });
-
-        conta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                conta();
-            }
-        });
-
-        melhor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                top10M();
-            }
-        });
-
-        pior.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                top10P();
-            }
-        });
+//        LinearLayout mapa = findViewById(R.id.linearMapa);
+//        LinearLayout obras = findViewById(R.id.linearObras);
+//        LinearLayout conta = findViewById(R.id.linearConta);
+//        LinearLayout melhor = findViewById(R.id.linearMelhores);
+//        LinearLayout pior = findViewById(R.id.linearPiores);
+//        mapa.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mapa();
+//            }
+//        });
+//
+//        obras.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                obras();
+//            }
+//        });
+//
+//        conta.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                conta();
+//            }
+//        });
+//
+//        melhor.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                top10M();
+//            }
+//        });
+//
+//        pior.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                top10P();
+//            }
+//        });
     }
 
     public void mapa(){
@@ -69,7 +95,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void conta(){
-        Intent intent = new Intent(this,ObrasActivity.class);
+        Intent intent = new Intent(this,DetalhesActivity.class);
         startActivity(intent);
     }
 
@@ -82,4 +108,21 @@ public class MenuActivity extends AppCompatActivity {
         Intent intent = new Intent(this,ObrasActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onResume()
+    { super.onResume(); mMapView.onResume(); }
+
+    @Override
+    public void onPause()
+    { super.onPause(); mMapView.onPause(); }
+
+    @Override
+    protected void onDestroy()
+    { super.onDestroy(); mMapView.onDestroy(); }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    { super.onSaveInstanceState(outState); mMapView.onSaveInstanceState(outState); }
+
 }

@@ -48,6 +48,14 @@ public class DetalhesActivity extends AppCompatActivity {
     public void carregar(){
         comments.add("Show");
         comments.add("Gostei muito do projeto");
+        comments.add("Show");
+        comments.add("Gostei muito do projeto");
+        comments.add("Show");
+        comments.add("Gostei muito do projeto");
+        comments.add("Show");
+        comments.add("Gostei muito do projeto");
+        comments.add("Show");
+        comments.add("Gostei muito do projeto");
         arrayAdapter = new ArrayAdapter<String>(DetalhesActivity.this,android.R.layout.simple_list_item_1, comments);
         listView.setAdapter(arrayAdapter);
     }
