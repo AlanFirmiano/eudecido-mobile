@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity{
     private MapboxMap map;
     MapView mMapView;
     private MapboxMap mMapboxMap;
-    private final LatLng LOCALIZATION_QUIXADA = new LatLng(-4.9607298,-39.0357613);
+    private final LatLng LOCALIZATION_QUIXADA = new LatLng(-4.9699206,-39.0169499);
     FloatingActionButton info;
     Marker markerSelect;
     @Override

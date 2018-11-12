@@ -36,6 +36,14 @@
             app:srcCompat="@drawable/ic_touch_app_black_24dp"
             tools:layout_editor_absoluteX="142dp" />
 
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
+
         <EditText
             android:id="@+id/editText"
             android:layout_width="match_parent"
@@ -50,6 +58,14 @@
             app:layout_constraintBottom_toTopOf="@+id/editText2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Senha"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/editText2"

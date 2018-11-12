@@ -100,4 +100,9 @@ public class Obra {
     public void setValor(Double valor) {
         this.valor = valor;
     }
+
+    @Override
+    public String toString() {
+        return getDescricao();
+    }
 }
