@@ -1,24 +1,41 @@
 package com.company.ja.trabalhofinal.model;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+@IgnoreExtraProperties
 public class Obra {
 
-    private Double avaliacao;
-    private Date dataFim;
-    private Date dataInicio;
-    private Date dataOrdem;
-    private String descricao;
-    private String latitude;
-    private String longitude;
-    private Double percentual;
-    private String situacao;
-    private Double valor;
+    public String key;
+    public Double avaliacao;
+    public String dataFim;
+    public String dataInicio;
+    public String dataOrdem;
+    public String descricao;
+    public String latitude;
+    public String longitude;
+    public Double percentual;
+    public String situacao;
+    public Double valor;
+    public List<Comentario> comentarios;
+    public List<Avaliacao> avaliacoes;
 
     public Obra(){
 
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public Double getAvaliacao() {
@@ -29,27 +46,27 @@ public class Obra {
         this.avaliacao = avaliacao;
     }
 
-    public Date getDataFim() {
+    public String getDataFim() {
         return dataFim;
     }
 
-    public void setDataFim(Date dataFim) {
+    public void setDataFim(String dataFim) {
         this.dataFim = dataFim;
     }
 
-    public Date getDataInicio() {
+    public String getDataInicio() {
         return dataInicio;
     }
 
-    public void setDataInicio(Date dataInicio) {
+    public void setDataInicio(String dataInicio) {
         this.dataInicio = dataInicio;
     }
 
-    public Date getDataOrdem() {
+    public String getDataOrdem() {
         return dataOrdem;
     }
 
-    public void setDataOrdem(Date dataOrdem) {
+    public void setDataOrdem(String dataOrdem) {
         this.dataOrdem = dataOrdem;
     }
 
@@ -99,5 +116,38 @@ public class Obra {
 
     public void setValor(Double valor) {
         this.valor = valor;
+    }
+
+    public List<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(List<Comentario> comentarios) {
+        this.comentarios = comentarios;
+    }
+
+    public List<Avaliacao> getAvaliacoes() {
+        return avaliacoes;
+    }
+
+    public void setAvaliacoes(List<Avaliacao> avaliacoes) {
+        this.avaliacoes = avaliacoes;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("key", key);
+        result.put("avaliacao", avaliacao);
+        result.put("dataFim", dataFim);
+        result.put("dataInicio", dataInicio);
+        result.put("dataOrdem", dataOrdem);
+        result.put("descricao", descricao);
+        result.put("latitude", latitude);
+        result.put("longitude", longitude);
+        result.put("percentual", percentual);
+        result.put("situacao", situacao);
+        result.put("valor", valor);
+        return result;
     }
 }

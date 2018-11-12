@@ -7,13 +7,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 @IgnoreExtraProperties
-public class Comentario {
+public class Avaliacao {
 
+    public Double valor;
     public Usuario usuario;
-    public String comentario;
 
-    public Comentario(){
+    public Double getValor() {
+        return valor;
+    }
 
+    public void setValor(Double valor) {
+        this.valor = valor;
     }
 
     public Usuario getUsuario() {
@@ -24,19 +28,11 @@ public class Comentario {
         this.usuario = usuario;
     }
 
-    public String getComentario() {
-        return comentario;
-    }
-
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
-    }
-
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("usuario", usuario);
-        result.put("comentario", comentario);
+        result.put("valor", valor);
         return result;
     }
 }
