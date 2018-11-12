@@ -1,5 +1,6 @@
 package com.company.ja.trabalhofinal;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.company.ja.trabalhofinal.model.Obra;
+import com.company.ja.trabalhofinal.viewmodel.ObraViewModel;
 import com.mapbox.mapboxsdk.annotations.BaseMarkerOptions;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
@@ -46,17 +49,50 @@ public class MainActivity extends AppCompatActivity{
         mMapView.onCreate(savedInstanceState);
 //        mMapView.setNightMode();
         Collection<MarkerOptions> listMarkerOptions = new ArrayList<>();
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(new LatLng(-4.957916,-39.0137485));
-        markerOptions.title("OBRA 1 aasdka ADNASKJD ASDNASKDNAS ASDJASKDNASD ASJDNASKJDNU ASDANIDASJN");
-        markerOptions.snippet("R$ 1.255.320,00");
-        listMarkerOptions.add(markerOptions);
 
-        markerOptions = new MarkerOptions();
-        markerOptions.position(new LatLng(-4.947916,-39.0237485));
-        markerOptions.title("OBRA 2");
-        markerOptions.snippet("R$ 338.130,00");
-        listMarkerOptions.add(markerOptions);
+        ObraViewModel model = ViewModelProviders.of(this).get(ObraViewModel.class);
+        model.getObras().observe(this, obras -> {
+            L.d("ObraViewModel", "dados recuperados main");
+            listMarkerOptions.clear();
+            for(Obra ob : obras){
+                L.d("ObraViewModel", "dados recuperados main "+obras.size());
+                MarkerOptions markerOption = new MarkerOptions();
+                markerOption.position(new LatLng(Double.parseDouble(ob.latitude),Double.parseDouble(ob.longitude)));
+                markerOption.title(ob.descricao);
+                markerOption.snippet("R$ "+ob.valor);
+                listMarkerOptions.add(markerOption);
+            }
+
+            mMapView.getMapAsync(new OnMapReadyCallback() {
+
+                @Override
+                public void onMapReady(MapboxMap mapboxMap) {
+
+                    mapboxMap.addMarkers((List<? extends BaseMarkerOptions>) listMarkerOptions);
+
+                    mapboxMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LOCALIZATION_QUIXADA, 12));
+                    mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(@NonNull Marker marker) {
+                            infoButton(true);
+                            markerSelect = marker;
+                            return false;
+                        }
+
+                    });
+                    mapboxMap.setOnMapClickListener(new MapboxMap.OnMapClickListener() {
+                        @Override
+                        public void onMapClick(@NonNull LatLng point) {
+                            infoButton(false);
+                            markerSelect = null;
+                        }
+                    });
+
+                }
+
+            });
+        });
+
 
         mMapView.getMapAsync(new OnMapReadyCallback() {
 
