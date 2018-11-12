@@ -150,4 +150,9 @@ public class Obra {
         result.put("valor", valor);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return getDescricao();
+    }
 }

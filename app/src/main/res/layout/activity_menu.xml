@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mapbox_blue"
+    android:background="?android:attr/colorButtonNormal"
     android:orientation="vertical"
     tools:context=".MenuActivity">
 
@@ -46,8 +46,18 @@
                 android:id="@+id/linearL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:gravity="bottom"
-                android:orientation="horizontal"></LinearLayout>
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="75dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_place_black_24dp" />
+            </LinearLayout>
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
@@ -56,7 +66,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:background="@color/mapbox_blue"
+        android:background="@android:color/transparent"
         android:fillViewport="true"
         android:paddingLeft="8dp"
         android:scrollbars="vertical"
@@ -82,7 +92,23 @@
                 android:layout_marginTop="8dp"
                 app:cardElevation="5dp"
                 tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="411dp" />
+                tools:layout_editor_absoluteY="411dp">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="75dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_list_black_24dp" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:text="Obras"
+                    android:textColor="@color/colorPrimaryDark" />
+            </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardConta"
@@ -92,7 +118,23 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_marginTop="8dp"
-                app:cardElevation="5dp" />
+                app:cardElevation="5dp">
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="75dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_person_black_24dp" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:text="Conta"
+                    android:textColor="@color/colorPrimaryDark" />
+            </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardTopM"
@@ -102,7 +144,23 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_marginTop="8dp"
-                app:cardElevation="5dp" />
+                app:cardElevation="5dp">
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="75dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_sentiment_very_satisfied_black_24dp" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:text="Top 10 Melhores"
+                    android:textColor="@color/colorPrimaryDark" />
+            </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardTopP"
@@ -112,7 +170,23 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
-                app:cardElevation="5dp" />
+                app:cardElevation="5dp">
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="75dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_sentiment_dissatisfied_black_24dp" />
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:text="Top 10 Piores"
+                    android:textColor="@color/colorPrimaryDark" />
+            </android.support.v7.widget.CardView>
         </LinearLayout>
     </HorizontalScrollView>
 

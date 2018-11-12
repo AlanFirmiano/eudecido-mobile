@@ -16,16 +16,28 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent();
 
         Button button = findViewById(R.id.button);
+        Button buttonR = findViewById(R.id.button2);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 menu();
             }
         });
+        buttonR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                register();
+            }
+        });
     }
 
     public void menu(){
         Intent intent = new Intent(this,MenuActivity.class);
+        startActivity(intent);
+    }
+
+    public void register(){
+        Intent intent = new Intent(this,RegisterActivity.class);
         startActivity(intent);
     }
 }

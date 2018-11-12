@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity{
     private MapboxMap map;
     MapView mMapView;
     private MapboxMap mMapboxMap;
-    private final LatLng LOCALIZATION_QUIXADA = new LatLng(-4.9607298,-39.0357613);
+    private final LatLng LOCALIZATION_QUIXADA = new LatLng(-4.9699206,-39.0169499);
     FloatingActionButton info;
     Marker markerSelect;
     @Override
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity{
         Collection<MarkerOptions> listMarkerOptions = new ArrayList<>();
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(new LatLng(-4.957916,-39.0137485));
-        markerOptions.title("OBRA 1");
+        markerOptions.title("OBRA 1 aasdka ADNASKJD ASDNASKDNAS ASDJASKDNASD ASJDNASKJDNU ASDANIDASJN");
         markerOptions.snippet("R$ 1.255.320,00");
         listMarkerOptions.add(markerOptions);
 
@@ -106,6 +106,12 @@ public class MainActivity extends AppCompatActivity{
         Intent intent = new Intent(this, DetalhesActivity.class);
         intent.putExtra("nome", markerSelect.getTitle());
         intent.putExtra("valor", markerSelect.getSnippet());
+        intent.putExtra("ordem", "05/09/2018");
+        intent.putExtra("inicio", "10/11/2018");
+        intent.putExtra("fim", "20/04/2019");
+        intent.putExtra("situacao", "EM PROGRESSO");
+        intent.putExtra("percentual", "87");
+        intent.putExtra("avaliacao", "4.4");
         startActivity(intent);
     }
 

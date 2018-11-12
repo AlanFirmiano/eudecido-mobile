@@ -24,7 +24,7 @@ public class MenuActivity extends AppCompatActivity {
     private MapboxMap map;
     MapView mMapView;
     private MapboxMap mMapboxMap;
-    private final LatLng LOCALIZATION_QUIXADA = new LatLng(-4.9607298,-39.0357613);
+    private final LatLng LOCALIZATION_QUIXADA = new LatLng(-4.9699206,-39.0169499);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +33,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
         mMapView = (MapView) findViewById(R.id.mapquestMapView);
         mMapView.onCreate(savedInstanceState);
-
+        mMapView.invalidate();
         Intent intent = new Intent();
 
         mMapView.getMapAsync(new OnMapReadyCallback() {
@@ -43,45 +43,45 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
-//        LinearLayout mapa = findViewById(R.id.linearMapa);
-//        LinearLayout obras = findViewById(R.id.linearObras);
-//        LinearLayout conta = findViewById(R.id.linearConta);
-//        LinearLayout melhor = findViewById(R.id.linearMelhores);
-//        LinearLayout pior = findViewById(R.id.linearPiores);
-//        mapa.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mapa();
-//            }
-//        });
-//
-//        obras.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                obras();
-//            }
-//        });
-//
-//        conta.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                conta();
-//            }
-//        });
-//
-//        melhor.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                top10M();
-//            }
-//        });
-//
-//        pior.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                top10P();
-//            }
-//        });
+        CardView mapa = findViewById(R.id.cardMap);
+        CardView obras = findViewById(R.id.cardList);
+        CardView conta = findViewById(R.id.cardConta);
+        CardView melhor = findViewById(R.id.cardTopM);
+        CardView pior = findViewById(R.id.cardTopP);
+        mapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mapa();
+            }
+        });
+
+        obras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                obras();
+            }
+        });
+
+        conta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                conta();
+            }
+        });
+
+        melhor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                top10M();
+            }
+        });
+
+        pior.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                top10P();
+            }
+        });
     }
 
     public void mapa(){
@@ -95,7 +95,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void conta(){
-        Intent intent = new Intent(this,DetalhesActivity.class);
+        Intent intent = new Intent(this,RegisterActivity.class);
         startActivity(intent);
     }
 

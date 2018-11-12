@@ -39,4 +39,9 @@ public class Comentario {
         result.put("comentario", comentario);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return getComentario();
+    }
 }

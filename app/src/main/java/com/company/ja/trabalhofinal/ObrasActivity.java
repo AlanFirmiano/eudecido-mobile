@@ -43,10 +43,11 @@ public class ObrasActivity extends Activity {
         ob.setDescricao("OBRA1");
         obras.add(ob);
         Obra ob2 = new Obra();
-        ob.setDescricao("OBRA2");
+        ob2.setDescricao("OBRA2");
         obras.add(ob2);
-        listView.setAdapter(arrayAdapter);
         arrayAdapter = new ArrayAdapter<Obra>(ObrasActivity.this,android.R.layout.simple_list_item_1, obras);
+
+        listView.setAdapter(arrayAdapter);
     }
 
 }
