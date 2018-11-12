@@ -33,7 +33,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
         mMapView = (MapView) findViewById(R.id.mapquestMapView);
         mMapView.onCreate(savedInstanceState);
-
+        mMapView.invalidate();
         Intent intent = new Intent();
 
         mMapView.getMapAsync(new OnMapReadyCallback() {
@@ -95,7 +95,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void conta(){
-        Intent intent = new Intent(this,DetalhesActivity.class);
+        Intent intent = new Intent(this,RegisterActivity.class);
         startActivity(intent);
     }
 

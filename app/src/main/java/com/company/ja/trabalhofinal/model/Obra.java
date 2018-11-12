@@ -7,9 +7,9 @@ import java.util.Date;
 public class Obra {
 
     private Double avaliacao;
-    private Date dataFim;
-    private Date dataInicio;
-    private Date dataOrdem;
+    private String dataFim;
+    private String dataInicio;
+    private String dataOrdem;
     private String descricao;
     private String latitude;
     private String longitude;
@@ -29,27 +29,27 @@ public class Obra {
         this.avaliacao = avaliacao;
     }
 
-    public Date getDataFim() {
+    public String getDataFim() {
         return dataFim;
     }
 
-    public void setDataFim(Date dataFim) {
+    public void setDataFim(String dataFim) {
         this.dataFim = dataFim;
     }
 
-    public Date getDataInicio() {
+    public String getDataInicio() {
         return dataInicio;
     }
 
-    public void setDataInicio(Date dataInicio) {
+    public void setDataInicio(String dataInicio) {
         this.dataInicio = dataInicio;
     }
 
-    public Date getDataOrdem() {
+    public String getDataOrdem() {
         return dataOrdem;
     }
 
-    public void setDataOrdem(Date dataOrdem) {
+    public void setDataOrdem(String dataOrdem) {
         this.dataOrdem = dataOrdem;
     }
 

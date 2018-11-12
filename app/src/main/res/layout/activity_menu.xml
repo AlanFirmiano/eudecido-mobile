@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
+    android:background="?android:attr/colorButtonNormal"
     android:orientation="vertical"
     tools:context=".MenuActivity">
 
@@ -66,7 +66,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@android:color/transparent"
         android:fillViewport="true"
         android:paddingLeft="8dp"
         android:scrollbars="vertical"
