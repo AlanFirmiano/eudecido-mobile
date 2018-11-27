@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.company.ja.trabalhofinal.model.Obra;
 import com.google.firebase.database.ChildEventListener;
@@ -23,8 +24,9 @@ public class ObraViewModel extends ViewModel {
     List<Obra> newObras = new ArrayList<>();
     private DatabaseReference mDatabase;
     private DatabaseReference dbRef;
-    private MutableLiveData<List<Obra>> obras;
     private MutableLiveData<List<Obra>> topObras;
+    private MutableLiveData<List<Obra>> obras;
+
 
     public LiveData<List<Obra>> getObras() {
         L.d("ObraViewModel", "get obras");
@@ -37,6 +39,9 @@ public class ObraViewModel extends ViewModel {
 
     private void loadObras() {
         L.d("ObraViewModel", "load obras");
+        if(mDatabase == null){
+            mDatabase = FirebaseDatabase.getInstance().getReference();
+        }
         mDatabase = FirebaseDatabase.getInstance().getReference();
         dbRef = FirebaseDatabase.getInstance().getReference("obras");
 
@@ -79,23 +84,32 @@ public class ObraViewModel extends ViewModel {
     }
 
     public void updateObra(Obra ob){
+        if(mDatabase == null){
+            mDatabase = FirebaseDatabase.getInstance().getReference();
+        }
         mDatabase.child("obras").child(ob.getKey()).setValue(ob);
     }
 
-    public MutableLiveData<List<Obra>> topObras(){
+    public LiveData<List<Obra>> topObras(){
+        L.d("TOP OBRA", "get obras");
         if (topObras == null) {
             topObras = new MutableLiveData<List<Obra>>();
+            this.getTopObras();
         }
-        getTopObras();
         return topObras;
     }
 
     private void getTopObras(){
+        if(mDatabase == null){
+            mDatabase = FirebaseDatabase.getInstance().getReference();
+        }
+        Log.d("TOP OBRAS", "aqui primeiro");
         Query myQuery = mDatabase.child("obras").orderByChild("avaliacao").limitToFirst(10);
         List<Obra> result = new ArrayList<>();
         myQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("TOP OBRAS", "aqui");
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     Obra i = postSnapshot.getValue(Obra.class);
                     result.add(i);
