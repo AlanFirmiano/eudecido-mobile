@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity{
             for(Obra ob : obras){
                 L.d("ObraViewModel", "dados recuperados main "+obras.size());
                 MarkerOptions markerOption = new MarkerOptions();
-                markerOption.position(new LatLng(Double.parseDouble(ob.latitude),Double.parseDouble(ob.longitude)));
+                markerOption.position(new LatLng(ob.latitude,ob.longitude));
                 markerOption.title(ob.descricao);
                 markerOption.snippet("R$ "+ob.valor);
                 listMarkerOptions.add(markerOption);

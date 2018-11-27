@@ -18,8 +18,8 @@ public class Obra {
     public String dataInicio;
     public String dataOrdem;
     public String descricao;
-    public String latitude;
-    public String longitude;
+    public Double latitude;
+    public Double longitude;
     public Double percentual;
     public String situacao;
     public Double valor;
@@ -78,21 +78,6 @@ public class Obra {
         this.descricao = descricao;
     }
 
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
 
     public Double getPercentual() {
         return percentual;
@@ -116,22 +101,6 @@ public class Obra {
 
     public void setValor(Double valor) {
         this.valor = valor;
-    }
-
-    public List<Comentario> getComentarios() {
-        return comentarios;
-    }
-
-    public void setComentarios(List<Comentario> comentarios) {
-        this.comentarios = comentarios;
-    }
-
-    public List<Avaliacao> getAvaliacoes() {
-        return avaliacoes;
-    }
-
-    public void setAvaliacoes(List<Avaliacao> avaliacoes) {
-        this.avaliacoes = avaliacoes;
     }
 
     @Exclude
