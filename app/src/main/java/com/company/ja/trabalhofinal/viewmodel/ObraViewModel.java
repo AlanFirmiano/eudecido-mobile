@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.company.ja.trabalhofinal.model.Avaliacao;
 import com.company.ja.trabalhofinal.model.Obra;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -84,10 +85,47 @@ public class ObraViewModel extends ViewModel {
 
     }
 
+    public LiveData<Obra> getObra(String key) {
+        MutableLiveData<Obra> obra = new MutableLiveData<Obra>();
+
+        if(mDatabase == null){
+            mDatabase = FirebaseDatabase.getInstance().getReference();
+        }
+
+        Query myQuery = mDatabase.child("obras").child(key);
+        myQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                obra.setValue(dataSnapshot.getValue(Obra.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        return obra;
+    }
+
+    private void getObraCall() {
+
+    }
+
     public void updateObra(Obra ob){
         if(mDatabase == null){
             mDatabase = FirebaseDatabase.getInstance().getReference();
         }
+        if(ob.avaliacoes != null && ob.avaliacoes.size() > 0) {
+            double soma = 0.0;
+            for (Avaliacao i : ob.avaliacoes) {
+                soma += i.getValor();
+            }
+
+            ob.avaliacao = (soma / ob.avaliacoes.size());
+        }
+        Log.d("UPDATEOB", "Aqui");
         mDatabase.child("obras").child(ob.getKey()).setValue(ob);
     }
 
