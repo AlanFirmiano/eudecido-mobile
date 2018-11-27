@@ -1,5 +1,7 @@
 package com.company.ja.trabalhofinal;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,13 +12,16 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.company.ja.trabalhofinal.model.Avaliacao;
 import com.company.ja.trabalhofinal.model.Comentario;
-import com.mapbox.mapboxsdk.annotations.Marker;
+import com.company.ja.trabalhofinal.model.Obra;
+import com.company.ja.trabalhofinal.viewmodel.ObraViewModel;
+import com.mapquest.android.commoncore.log.L;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 public class DetalhesActivity extends AppCompatActivity {
@@ -35,13 +40,15 @@ public class DetalhesActivity extends AppCompatActivity {
     TextView percentual;
     TextView avaliacao;
     ProgressBar progress;
-    RatingBar rating;
-
+    RatingBar myRatingBar;
+    Obra obra;
+    List<Obra> listObras;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhes);
         listView = (ListView) findViewById(R.id.listDados);
+        listObras = new ArrayList<>();
         intent = getIntent();
         //GET
         descricao = (TextView) findViewById(R.id.textView);
@@ -52,7 +59,7 @@ public class DetalhesActivity extends AppCompatActivity {
         percentual = (TextView) findViewById(R.id.percentual);
         avaliacao = (TextView) findViewById(R.id.avaliacao);
         progress = (ProgressBar) findViewById(R.id.progressBar);
-        rating = (RatingBar) findViewById(R.id.ratingBar);
+        myRatingBar = (RatingBar) findViewById(R.id.ratingBar);
         //SET
         if(intent.getStringExtra("valor") != null) {
             valor.setText(""+intent.getStringExtra("valor"));
@@ -71,7 +78,31 @@ public class DetalhesActivity extends AppCompatActivity {
         Integer prog = (int) Double.parseDouble(intent.getStringExtra("percentual"));
 
         progress.setProgress(prog);
-        carregar();
+        obra = new Obra();
+        ObraViewModel model = ViewModelProviders.of(this).get(ObraViewModel.class);
+
+
+        carregar(model);
+        if(listObras.size()>0){
+            for (Obra ob : listObras) {
+                Toast.makeText(this, ""+listObras.size(),Toast.LENGTH_LONG).show();
+                if(ob.getDescricao().equals(intent.getStringExtra("nome"))){
+                    obra = ob;
+                    break;
+                }
+            }
+        }
+        if(obra!=null){
+
+            Double medRating = 0.0;
+            if(obra.avaliacoes!=null) {
+                for (Avaliacao x : obra.avaliacoes) {
+                    medRating += x.valor;
+                }
+
+                avaliacao.setText(""+(medRating / obra.avaliacoes.size()));
+            }
+        }
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -81,9 +112,41 @@ public class DetalhesActivity extends AppCompatActivity {
             }
 
         });
+        myRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if(obra!=null) {
+
+                    try {
+                        ratingBar.setRating(rating);
+                        avaliacao.setText(""+rating);
+                        Avaliacao nova = new Avaliacao();
+                        nova.setValor((double) rating);
+                        obra.setAvaliacao((double) rating);
+                        if(obra.avaliacoes==null){
+                            obra.avaliacoes = new ArrayList<>();
+                        }
+                        obra.avaliacoes.add(nova);
+                        L.e("ERRO -> "+obra.avaliacoes.size());
+                        model.updateObra(obra);
+                        Toast.makeText(getApplicationContext(), "AVALIAÇÃO -> " + rating, Toast.LENGTH_LONG).show();
+                    }catch (Exception err){
+                        Toast.makeText(getApplicationContext(), "Erro na avaliação!", Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(), "Problema de conexão, Tente mais tarde!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
     }
 
-    public void carregar(){
+    public void carregar(ObraViewModel model){
+        model.getObras().observe(this, obras -> {
+            listObras = obras;
+        });
+
         Comentario c = new Comentario();
         Comentario c2 = new Comentario();
         Comentario c3 = new Comentario();
