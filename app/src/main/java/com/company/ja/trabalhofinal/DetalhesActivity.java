@@ -54,7 +54,7 @@ public class DetalhesActivity extends AppCompatActivity {
         progress = (ProgressBar) findViewById(R.id.progressBar);
         rating = (RatingBar) findViewById(R.id.ratingBar);
         //SET
-        valor.setText(intent.getStringExtra("valor"));
+        valor.setText(""+intent.getStringExtra("valor"));
         descricao.setText(intent.getStringExtra("nome"));
         dataOrdem.setText(intent.getStringExtra("ordem"));
         dataInicioFim.setText(intent.getStringExtra("inicio") + "-" + intent.getStringExtra("fim"));

@@ -37,12 +37,13 @@ public class MainActivity extends AppCompatActivity{
     private final LatLng LOCALIZATION_QUIXADA = new LatLng(-4.9699206,-39.0169499);
     FloatingActionButton info;
     Marker markerSelect;
+    List<Obra> listObras;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MapQuest.start(getApplicationContext());
         setContentView(R.layout.activity_main);
-
+        listObras = new ArrayList<>();
         mMapView = (MapView) findViewById(R.id.mapquestMapView);
         info = (FloatingActionButton) findViewById(R.id.floatingActionButton2);
 
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity{
             L.d("ObraViewModel", "dados recuperados main");
             listMarkerOptions.clear();
             for(Obra ob : obras){
+                listObras = obras;
                 L.d("ObraViewModel", "dados recuperados main "+obras.size());
                 MarkerOptions markerOption = new MarkerOptions();
                 markerOption.position(new LatLng(ob.latitude,ob.longitude));
@@ -139,16 +141,28 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void detalhesObra(){
-        Intent intent = new Intent(this, DetalhesActivity.class);
-        intent.putExtra("nome", markerSelect.getTitle());
-        intent.putExtra("valor", markerSelect.getSnippet());
-        intent.putExtra("ordem", "05/09/2018");
-        intent.putExtra("inicio", "10/11/2018");
-        intent.putExtra("fim", "20/04/2019");
-        intent.putExtra("situacao", "EM PROGRESSO");
-        intent.putExtra("percentual", "87");
-        intent.putExtra("avaliacao", "4.4");
-        startActivity(intent);
+        Obra ob = new Obra();
+        for(Obra aux: listObras){
+            if(aux.getDescricao().equals(markerSelect.getTitle())){
+                ob = aux;
+                break;
+            }
+        }
+        if(ob != null) {
+            Intent intent = new Intent(this, DetalhesActivity.class);
+            intent.putExtra("nome", ob.getDescricao());
+            intent.putExtra("nome", ob.getDescricao());
+            intent.putExtra("valor", ob.getValor());
+            intent.putExtra("ordem", ob.getDataOrdem());
+            intent.putExtra("inicio", ob.getDataInicio());
+            intent.putExtra("fim", ob.getDataFim());
+            intent.putExtra("situacao", ob.getSituacao().toUpperCase());
+            intent.putExtra("percentual", ""+ob.getPercentual());
+            intent.putExtra("avaliacao", ""+ob.getAvaliacao());
+            startActivity(intent);
+        }else{
+            //ERRO IMPOSSIVEL
+        }
     }
 
 //    private void addMarker(MapboxMap mapboxMap) {
