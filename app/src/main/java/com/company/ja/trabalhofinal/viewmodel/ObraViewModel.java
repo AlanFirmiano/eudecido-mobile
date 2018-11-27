@@ -25,6 +25,7 @@ public class ObraViewModel extends ViewModel {
     private DatabaseReference mDatabase;
     private DatabaseReference dbRef;
     private MutableLiveData<List<Obra>> topObras;
+    private MutableLiveData<List<Obra>> pioresObras;
     private MutableLiveData<List<Obra>> obras;
 
 
@@ -94,8 +95,8 @@ public class ObraViewModel extends ViewModel {
         L.d("TOP OBRA", "get obras");
         if (topObras == null) {
             topObras = new MutableLiveData<List<Obra>>();
-            this.getTopObras();
         }
+        this.getTopObras();
         return topObras;
     }
 
@@ -115,6 +116,39 @@ public class ObraViewModel extends ViewModel {
                     result.add(i);
                 }
                 topObras.setValue(result);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public LiveData<List<Obra>> pioresObras(){
+        L.d("TOP OBRA", "get obras");
+        if (pioresObras == null) {
+            pioresObras = new MutableLiveData<List<Obra>>();
+        }
+        this.getPioresObras();
+        return pioresObras;
+    }
+
+    private void getPioresObras(){
+        if(mDatabase == null){
+            mDatabase = FirebaseDatabase.getInstance().getReference();
+        }
+        Query myQuery = mDatabase.child("obras").orderByChild("avaliacao").limitToLast(10);
+        List<Obra> result = new ArrayList<>();
+        myQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("TOP OBRAS", "aqui");
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    Obra i = postSnapshot.getValue(Obra.class);
+                    result.add(i);
+                }
+                pioresObras.setValue(result);
             }
 
             @Override
