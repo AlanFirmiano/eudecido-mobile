@@ -45,9 +45,9 @@ public class ObraViewModel extends ViewModel {
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                L.d("ObraViewModel", "load obras alteracoes");
-                collectObra(dataSnapshot);
-
+                Obra ob = dataSnapshot.getValue(Obra.class);
+                newObras.add(ob);
+                obras.setValue(newObras);
             }
 
             @Override
@@ -70,26 +70,5 @@ public class ObraViewModel extends ViewModel {
         };
         dbRef.addChildEventListener(childListener);
 
-    }
-
-    private void collectObra(DataSnapshot singleObra) {
-        L.d("ObraViewModel", "dados recuperados");
-
-        Obra ob = new Obra();
-        ob.key = (String) singleObra.child("key").getValue();
-        ob.descricao = (String) singleObra.child("descricao").getValue();
-        ob.avaliacao = Double.parseDouble((String) singleObra.child("avaliacao").getValue().toString());
-        ob.dataInicio = (String) singleObra.child("dataInicio").getValue();
-        ob.dataFim = (String) singleObra.child("dataFim").getValue();
-        ob.dataOrdem = (String) singleObra.child("dataOrdem").getValue();
-        ob.latitude = (String) singleObra.child("latitude").getValue().toString();
-        ob.longitude = (String) singleObra.child("longitude").getValue().toString();
-        ob.percentual = Double.parseDouble((String) singleObra.child("percentual").getValue().toString());
-        ob.situacao = (String) singleObra.child("situacao").getValue();
-        ob.valor = Double.parseDouble((String) singleObra.child("valor").getValue().toString());
-
-        newObras.add(ob);
-
-        this.obras.setValue(newObras);
     }
 }
