@@ -151,8 +151,7 @@ public class MainActivity extends AppCompatActivity{
         if(ob != null) {
             Intent intent = new Intent(this, DetalhesActivity.class);
             intent.putExtra("nome", ob.getDescricao());
-            intent.putExtra("nome", ob.getDescricao());
-            intent.putExtra("valor", ob.getValor());
+            intent.putExtra("valor", "R$"+ob.getValor());
             intent.putExtra("ordem", ob.getDataOrdem());
             intent.putExtra("inicio", ob.getDataInicio());
             intent.putExtra("fim", ob.getDataFim());
@@ -163,6 +162,7 @@ public class MainActivity extends AppCompatActivity{
         }else{
             //ERRO IMPOSSIVEL
         }
+
     }
 
 //    private void addMarker(MapboxMap mapboxMap) {

@@ -24,7 +24,9 @@
         <activity
             android:name=".ObrasActivity"
             android:label="@string/title_activity_obras" />
-        <activity android:name=".MenuActivity"></activity>
+        <activity android:name=".MenuActivity" />
+        <activity android:name=".TopMelhoresActivity" />
+        <activity android:name=".TopPioresActivity"></activity>
     </application>
 
 </manifest>

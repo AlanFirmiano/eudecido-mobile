@@ -100,12 +100,12 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void top10M(){
-        Intent intent = new Intent(this,ObrasActivity.class);
+        Intent intent = new Intent(this,TopMelhoresActivity.class);
         startActivity(intent);
     }
 
     public void top10P(){
-        Intent intent = new Intent(this,ObrasActivity.class);
+        Intent intent = new Intent(this,TopPioresActivity.class);
         startActivity(intent);
     }
 

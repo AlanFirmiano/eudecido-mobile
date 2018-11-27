@@ -2,27 +2,23 @@ package com.company.ja.trabalhofinal;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.company.ja.trabalhofinal.model.Obra;
 import com.company.ja.trabalhofinal.viewmodel.ObraViewModel;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
-import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapquest.android.commoncore.log.L;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class ObrasActivity extends AppCompatActivity {
+public class TopMelhoresActivity extends AppCompatActivity {
     ListView listView;
     private List<Obra> listObras = new ArrayList<>();
     private ArrayAdapter<Obra> arrayAdapter;
@@ -30,16 +26,15 @@ public class ObrasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_obras);
+        setContentView(R.layout.activity_top_melhores);
         listView = (ListView) findViewById(R.id.listObras);
 
         Collection<MarkerOptions> listMarkerOptions = new ArrayList<>();
-
         ObraViewModel model = ViewModelProviders.of(this).get(ObraViewModel.class);
-        model.getObras().observe(this, obras -> {
+        model.topObras().observe(this, obras -> {
             this.listObras = obras;
             listMarkerOptions.clear();
-            arrayAdapter = new ArrayAdapter<Obra>(ObrasActivity.this,android.R.layout.simple_list_item_1, this.listObras);
+            arrayAdapter = new ArrayAdapter<Obra>(TopMelhoresActivity.this,android.R.layout.simple_list_item_1, this.listObras);
 
             listView.setAdapter(arrayAdapter);
         });
@@ -55,8 +50,6 @@ public class ObrasActivity extends AppCompatActivity {
             }
 
         });
-
-
     }
 
     public void detalhesObra(int position){
@@ -72,5 +65,4 @@ public class ObrasActivity extends AppCompatActivity {
         intent.putExtra("avaliacao", ""+selectObra.getAvaliacao());
         startActivity(intent);
     }
-
 }
