@@ -31,7 +31,7 @@ public class TopPioresActivity extends AppCompatActivity {
 
         Collection<MarkerOptions> listMarkerOptions = new ArrayList<>();
         ObraViewModel model = ViewModelProviders.of(this).get(ObraViewModel.class);
-        model.getObras().observe(this, obras -> {
+        model.pioresObras().observe(this, obras -> {
             this.listObras = obras;
             listMarkerOptions.clear();
             arrayAdapter = new ArrayAdapter<Obra>(TopPioresActivity.this,android.R.layout.simple_list_item_1, this.listObras);
