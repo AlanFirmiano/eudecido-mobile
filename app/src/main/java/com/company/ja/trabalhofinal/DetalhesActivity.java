@@ -14,7 +14,9 @@ import android.widget.TextView;
 import com.company.ja.trabalhofinal.model.Comentario;
 import com.mapbox.mapboxsdk.annotations.Marker;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DetalhesActivity extends AppCompatActivity {
