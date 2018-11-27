@@ -62,7 +62,8 @@ public class DetalhesActivity extends AppCompatActivity {
 //        progress.setProgress(Integer.parseInt(percentual.getText().toString()));
 //        rating.setRating(Float.parseFloat(avaliacao.getText().toString()));
 
-        Integer prog = Integer.parseInt(intent.getStringExtra("percentual"));
+        Integer prog = (int) Double.parseDouble(intent.getStringExtra("percentual"));
+
         progress.setProgress(prog);
         carregar();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

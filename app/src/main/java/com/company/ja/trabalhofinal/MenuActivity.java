@@ -35,7 +35,6 @@ public class MenuActivity extends AppCompatActivity {
         mMapView.onCreate(savedInstanceState);
         mMapView.invalidate();
         Intent intent = new Intent();
-
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
@@ -48,6 +47,7 @@ public class MenuActivity extends AppCompatActivity {
         CardView conta = findViewById(R.id.cardConta);
         CardView melhor = findViewById(R.id.cardTopM);
         CardView pior = findViewById(R.id.cardTopP);
+
         mapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
