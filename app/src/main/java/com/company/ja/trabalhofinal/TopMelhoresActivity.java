@@ -17,6 +17,7 @@ import com.mapquest.android.commoncore.log.L;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Stack;
 
 public class TopMelhoresActivity extends AppCompatActivity {
     ListView listView;
@@ -55,6 +56,7 @@ public class TopMelhoresActivity extends AppCompatActivity {
     public void detalhesObra(int position){
         Obra selectObra = listObras.get(position);
         Intent intent = new Intent(this, DetalhesActivity.class);
+        intent.putExtra("key", selectObra.getKey());
         intent.putExtra("nome", selectObra.getDescricao());
         intent.putExtra("valor", "R$"+selectObra.getValor());
         intent.putExtra("ordem", selectObra.getDataOrdem());

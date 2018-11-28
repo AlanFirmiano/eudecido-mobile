@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity{
         }
         if(ob != null) {
             Intent intent = new Intent(this, DetalhesActivity.class);
+            intent.putExtra("key", ob.getKey());
             intent.putExtra("nome", ob.getDescricao());
             intent.putExtra("valor", "R$"+ob.getValor());
             intent.putExtra("ordem", ob.getDataOrdem());

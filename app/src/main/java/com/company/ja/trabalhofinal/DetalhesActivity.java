@@ -3,11 +3,14 @@ package com.company.ja.trabalhofinal;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -39,6 +42,8 @@ public class DetalhesActivity extends AppCompatActivity {
     TextView situacao;
     TextView percentual;
     TextView avaliacao;
+    EditText editComent;
+    FloatingActionButton comentar;
     ProgressBar progress;
     RatingBar myRatingBar;
     Obra obra;
@@ -59,7 +64,9 @@ public class DetalhesActivity extends AppCompatActivity {
         percentual = (TextView) findViewById(R.id.percentual);
         avaliacao = (TextView) findViewById(R.id.avaliacao);
         progress = (ProgressBar) findViewById(R.id.progressBar);
+        editComent = (EditText) findViewById(R.id.editText4);
         myRatingBar = (RatingBar) findViewById(R.id.ratingBar);
+        comentar = (FloatingActionButton) findViewById(R.id.floatingActionButton3);
         //SET
         if(intent.getStringExtra("valor") != null) {
             valor.setText(""+intent.getStringExtra("valor"));
@@ -80,29 +87,15 @@ public class DetalhesActivity extends AppCompatActivity {
         progress.setProgress(prog);
         obra = new Obra();
         ObraViewModel model = ViewModelProviders.of(this).get(ObraViewModel.class);
+        avaliacao.setText("0.0");
+        model.getObra(intent.getStringExtra("key")).observe(this, obras -> {
+            this.obra = obras;
+            comments = obra.comentarios;
 
+            avaliacao.setText(""+this.obra.avaliacao);
+            carregar();
+        });
 
-        carregar(model);
-        if(listObras.size()>0){
-            for (Obra ob : listObras) {
-                Toast.makeText(this, ""+listObras.size(),Toast.LENGTH_LONG).show();
-                if(ob.getDescricao().equals(intent.getStringExtra("nome"))){
-                    obra = ob;
-                    break;
-                }
-            }
-        }
-        if(obra!=null){
-
-            Double medRating = 0.0;
-            if(obra.avaliacoes!=null) {
-                for (Avaliacao x : obra.avaliacoes) {
-                    medRating += x.valor;
-                }
-
-                avaliacao.setText(""+(medRating / obra.avaliacoes.size()));
-            }
-        }
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -112,6 +105,19 @@ public class DetalhesActivity extends AppCompatActivity {
             }
 
         });
+        comentar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(obra.comentarios==null){
+                    obra.comentarios = new ArrayList<>();
+                }
+                Comentario com = new Comentario();
+                com.setComentario(editComent.getText().toString());
+                obra.comentarios.add(com);
+                editComent.setText("");
+                model.updateObra(obra);
+            }
+        });
         myRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
@@ -119,10 +125,9 @@ public class DetalhesActivity extends AppCompatActivity {
 
                     try {
                         ratingBar.setRating(rating);
-                        avaliacao.setText(""+rating);
                         Avaliacao nova = new Avaliacao();
                         nova.setValor((double) rating);
-                        obra.setAvaliacao((double) rating);
+                        //obra.setAvaliacao((double) rating);
                         if(obra.avaliacoes==null){
                             obra.avaliacoes = new ArrayList<>();
                         }
@@ -142,26 +147,10 @@ public class DetalhesActivity extends AppCompatActivity {
 
     }
 
-    public void carregar(ObraViewModel model){
-        model.getObras().observe(this, obras -> {
-            listObras = obras;
-        });
-
-        Comentario c = new Comentario();
-        Comentario c2 = new Comentario();
-        Comentario c3 = new Comentario();
-        Comentario c4 = new Comentario();
-        Comentario c5 = new Comentario();
-        c.setComentario("Show");
-        comments.add(c);
-        c2.setComentario("Gostei");
-        comments.add(c2);
-        c3.setComentario("Muito bom");
-        comments.add(c3);
-        c4.setComentario("Show");
-        comments.add(c4);
-        c5.setComentario("Não Gostei");
-        comments.add(c5);
+    public void carregar(){
+        if(comments==null){
+            comments = new ArrayList<>();
+        }
         arrayAdapter = new ArrayAdapter<Comentario>(DetalhesActivity.this,android.R.layout.simple_list_item_1, comments);
         listView.setAdapter(arrayAdapter);
     }

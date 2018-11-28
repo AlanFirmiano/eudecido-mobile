@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.mapquest.android.commoncore.log.L;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ObraViewModel extends ViewModel {
@@ -58,14 +59,14 @@ public class ObraViewModel extends ViewModel {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Obra ob = dataSnapshot.getValue(Obra.class);
-                for(Obra i: newObras){
-                    if(i.getKey().equals(ob.getKey())){
-                        newObras.remove(i);
-                        newObras.add(ob);
-                    }
-                }
-                obras.postValue(newObras);
+//                Obra ob = dataSnapshot.getValue(Obra.class);
+//                for(Obra i: newObras){
+//                    if(i.getKey().equals(ob.getKey())){
+//                        newObras.remove(i);
+//                        newObras.add(ob);
+//                    }
+//                }
+//                obras.postValue(newObras);
             }
 
             @Override
@@ -143,15 +144,15 @@ public class ObraViewModel extends ViewModel {
             mDatabase = FirebaseDatabase.getInstance().getReference();
         }
         Log.d("TOP OBRAS", "aqui primeiro");
-        Query myQuery = mDatabase.child("obras").orderByChild("avaliacao").limitToFirst(10);
-        List<Obra> result = new ArrayList<>();
+        Query myQuery = mDatabase.child("obras").orderByChild("avaliacao").limitToLast(10);
+        LinkedList<Obra> result = new LinkedList();
         myQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("TOP OBRAS", "aqui");
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     Obra i = postSnapshot.getValue(Obra.class);
-                    result.add(i);
+                    result.addFirst(i);
                 }
                 topObras.setValue(result);
             }
@@ -176,7 +177,7 @@ public class ObraViewModel extends ViewModel {
         if(mDatabase == null){
             mDatabase = FirebaseDatabase.getInstance().getReference();
         }
-        Query myQuery = mDatabase.child("obras").orderByChild("avaliacao").limitToLast(10);
+        Query myQuery = mDatabase.child("obras").orderByChild("avaliacao").limitToFirst(10);
         List<Obra> result = new ArrayList<>();
         myQuery.addValueEventListener(new ValueEventListener() {
             @Override
