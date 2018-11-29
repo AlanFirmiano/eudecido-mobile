@@ -1,6 +1,8 @@
 package com.company.ja.trabalhofinal;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -15,9 +17,15 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.company.ja.trabalhofinal.model.Usuario;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +37,8 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapquest.mapping.MapQuest;
 import com.mapquest.mapping.maps.MapView;
+
+import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -103,6 +113,8 @@ public class MenuActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mCallbackManager = CallbackManager.Factory.create();
+
+        loginFB();
     }
 
     @Override
@@ -113,7 +125,8 @@ public class MenuActivity extends AppCompatActivity {
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        Toast.makeText(getApplicationContext(), "Logado", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Bem vindo", Toast.LENGTH_LONG).show();
+                        getUserFB(loginResult.getAccessToken().getToken(), loginResult.getAccessToken().getUserId());
                     }
 
                     @Override
@@ -124,13 +137,31 @@ public class MenuActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(FacebookException exception) {
-                        Log.d("FBERRO", exception.getMessage());
                         Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
                         loginFB();
                     }
                 });
+    }
 
-        loginFB();
+    public void getUserFB(String token, String userId){
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                "/"+userId+"?fields=id,picture,name",
+                null,
+                HttpMethod.GET,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+                        JSONObject userJson = response.getJSONObject();
+                        try {
+                            final SharedPreferences sharedPreferences = getSharedPreferences("EUDECIDO", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("id", userId);
+                            editor.putString("nome", userJson.getString("name"));
+                            editor.putString("fotoUrl", userJson.getJSONObject("picture").getJSONObject("data").getString("url"));
+                        }catch (Exception e){}
+                    }
+                }
+        ).executeAsync();
     }
 
     public void loginFB(){
