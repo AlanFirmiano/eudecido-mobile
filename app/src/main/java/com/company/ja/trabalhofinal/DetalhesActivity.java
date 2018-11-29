@@ -2,7 +2,9 @@ package com.company.ja.trabalhofinal;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,7 +23,9 @@ import com.company.ja.trabalhofinal.listview.CustomList;
 import com.company.ja.trabalhofinal.model.Avaliacao;
 import com.company.ja.trabalhofinal.model.Comentario;
 import com.company.ja.trabalhofinal.model.Obra;
+import com.company.ja.trabalhofinal.model.Usuario;
 import com.company.ja.trabalhofinal.viewmodel.ObraViewModel;
+import com.company.ja.trabalhofinal.viewmodel.UsuarioViewModel;
 import com.mapquest.android.commoncore.log.L;
 
 import java.util.ArrayList;
@@ -104,20 +108,8 @@ public class DetalhesActivity extends AppCompatActivity {
             comments = obra.comentarios;
 
             avaliacao.setText(""+this.obra.avaliacao);
-            carregar();
-        });
-
-        //teste listview
-        CustomList listAdapter = new
-                CustomList(DetalhesActivity.this, web, imageId);
-        listView=(ListView)findViewById(R.id.listDados);
-        listView.setAdapter(listAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Toast.makeText(DetalhesActivity.this, "You Clicked at " +web[+ position], Toast.LENGTH_SHORT).show();
-            }
+            //carregar();
+            carregarListView();
         });
 
 //        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -137,6 +129,10 @@ public class DetalhesActivity extends AppCompatActivity {
                 }
                 Comentario com = new Comentario();
                 com.setComentario(editComent.getText().toString());
+
+                Toast.makeText(getApplication(),UsuarioViewModel.logado.nome, Toast.LENGTH_LONG).show();
+                com.usuario = UsuarioViewModel.logado;
+
                 obra.comentarios.add(com);
                 editComent.setText("");
                 model.updateObra(obra);
@@ -177,5 +173,19 @@ public class DetalhesActivity extends AppCompatActivity {
         }
         arrayAdapter = new ArrayAdapter<Comentario>(DetalhesActivity.this,android.R.layout.simple_list_item_1, comments);
         listView.setAdapter(arrayAdapter);
+    }
+
+    public void carregarListView(){
+        CustomList listAdapter = new
+                CustomList(DetalhesActivity.this, comments);
+        listView=(ListView)findViewById(R.id.listDados);
+        listView.setAdapter(listAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                //Toast.makeText(DetalhesActivity.this, "You Clicked at " +web[+ position], Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

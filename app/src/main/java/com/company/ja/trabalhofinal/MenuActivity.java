@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.company.ja.trabalhofinal.model.Usuario;
+import com.company.ja.trabalhofinal.viewmodel.ObraViewModel;
+import com.company.ja.trabalhofinal.viewmodel.UsuarioViewModel;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -146,18 +148,19 @@ public class MenuActivity extends AppCompatActivity {
     public void getUserFB(String token, String userId){
         new GraphRequest(
                 AccessToken.getCurrentAccessToken(),
-                "/"+userId+"?fields=id,picture,name",
+                "/"+userId+"?fields=id,picture.type(large),name",
                 null,
                 HttpMethod.GET,
                 new GraphRequest.Callback() {
                     public void onCompleted(GraphResponse response) {
                         JSONObject userJson = response.getJSONObject();
                         try {
-                            final SharedPreferences sharedPreferences = getSharedPreferences("EUDECIDO", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("id", userId);
-                            editor.putString("nome", userJson.getString("name"));
-                            editor.putString("fotoUrl", userJson.getJSONObject("picture").getJSONObject("data").getString("url"));
+
+                            if(UsuarioViewModel.logado == null)
+                                UsuarioViewModel.logado = new Usuario();
+                            UsuarioViewModel.logado.id = userId;
+                            UsuarioViewModel.logado.nome = userJson.getString("name");
+                            UsuarioViewModel.logado.fotoUrl = userJson.getJSONObject("picture").getJSONObject("data").getString("url");
                         }catch (Exception e){}
                     }
                 }
