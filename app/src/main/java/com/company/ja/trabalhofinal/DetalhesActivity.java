@@ -17,6 +17,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.company.ja.trabalhofinal.listview.CustomList;
 import com.company.ja.trabalhofinal.model.Avaliacao;
 import com.company.ja.trabalhofinal.model.Comentario;
 import com.company.ja.trabalhofinal.model.Obra;
@@ -48,6 +49,16 @@ public class DetalhesActivity extends AppCompatActivity {
     RatingBar myRatingBar;
     Obra obra;
     List<Obra> listObras;
+    Integer[] imageId = {
+            R.drawable.ic_person_black_24dp
+    };
+    String[] web = {
+            "Java",
+            "C++",
+            "C#",
+            "HTML",
+            "CSS"
+    } ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,15 +107,28 @@ public class DetalhesActivity extends AppCompatActivity {
             carregar();
         });
 
+        //teste listview
+        CustomList listAdapter = new
+                CustomList(DetalhesActivity.this, web, imageId);
+        listView=(ListView)findViewById(R.id.listDados);
+        listView.setAdapter(listAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                comentario = (String)parent.getItemAtPosition(position);
-                myPosition = position;
-                view.setSelected(true);
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Toast.makeText(DetalhesActivity.this, "You Clicked at " +web[+ position], Toast.LENGTH_SHORT).show();
             }
-
         });
+
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                comentario = (String)parent.getItemAtPosition(position);
+//                myPosition = position;
+//                view.setSelected(true);
+//            }
+//
+//        });
         comentar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

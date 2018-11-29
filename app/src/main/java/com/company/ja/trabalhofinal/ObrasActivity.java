@@ -39,6 +39,7 @@ public class ObrasActivity extends AppCompatActivity {
         model.getObras().observe(this, obras -> {
             this.listObras = obras;
             listMarkerOptions.clear();
+
             arrayAdapter = new ArrayAdapter<Obra>(ObrasActivity.this,android.R.layout.simple_list_item_1, this.listObras);
 
             listView.setAdapter(arrayAdapter);
@@ -62,6 +63,7 @@ public class ObrasActivity extends AppCompatActivity {
     public void detalhesObra(int position){
         Obra selectObra = listObras.get(position);
         Intent intent = new Intent(this, DetalhesActivity.class);
+        intent.putExtra("key", selectObra.getKey());
         intent.putExtra("nome", selectObra.getDescricao());
         intent.putExtra("valor", "R$"+selectObra.getValor());
         intent.putExtra("ordem", selectObra.getDataOrdem());
