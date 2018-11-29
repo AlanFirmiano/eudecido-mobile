@@ -1,14 +1,26 @@
 package com.company.ja.trabalhofinal;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.mapbox.mapboxsdk.annotations.BaseMarkerOptions;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
@@ -18,9 +30,15 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapquest.mapping.MapQuest;
 import com.mapquest.mapping.maps.MapView;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
+    private FirebaseAuth mAuth;
+    private CallbackManager mCallbackManager;
+
     private MapboxMap map;
     MapView mMapView;
     private MapboxMap mMapboxMap;
@@ -82,7 +100,51 @@ public class MenuActivity extends AppCompatActivity {
                 top10P();
             }
         });
+
+        mAuth = FirebaseAuth.getInstance();
+        mCallbackManager = CallbackManager.Factory.create();
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        LoginManager.getInstance().registerCallback(mCallbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        Toast.makeText(getApplicationContext(), "Logado", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Toast.makeText(getApplicationContext(), "Tente novamente", Toast.LENGTH_LONG).show();
+                        loginFB();
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        Log.d("FBERRO", exception.getMessage());
+                        Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+                        loginFB();
+                    }
+                });
+
+        loginFB();
+    }
+
+    public void loginFB(){
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email"));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 
     public void mapa(){
         Intent intent = new Intent(this,MainActivity.class);
