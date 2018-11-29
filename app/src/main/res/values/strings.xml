@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">EuDecido</string>
     <string name="title_activity_obras">ObrasActivity</string>
+
+    <string name="facebook_app_id">263220621216951</string>
+    <string name="fb_login_protocol_scheme">fb263220621216951</string>
 </resources>
