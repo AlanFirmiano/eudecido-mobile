@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity{
             Intent intent = new Intent(this, DetalhesActivity.class);
             intent.putExtra("key", ob.getKey());
             intent.putExtra("nome", ob.getDescricao());
-            intent.putExtra("valor", "R$"+ob.getValor());
+            intent.putExtra("valor", ob.getValor());
             intent.putExtra("ordem", ob.getDataOrdem());
             intent.putExtra("inicio", ob.getDataInicio());
             intent.putExtra("fim", ob.getDataFim());

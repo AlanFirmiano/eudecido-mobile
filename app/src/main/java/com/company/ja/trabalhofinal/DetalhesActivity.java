@@ -28,9 +28,14 @@ import com.company.ja.trabalhofinal.viewmodel.ObraViewModel;
 import com.company.ja.trabalhofinal.viewmodel.UsuarioViewModel;
 import com.mapquest.android.commoncore.log.L;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class DetalhesActivity extends AppCompatActivity {
     ListView listView;
@@ -83,14 +88,11 @@ public class DetalhesActivity extends AppCompatActivity {
         myRatingBar = (RatingBar) findViewById(R.id.ratingBar);
         comentar = (FloatingActionButton) findViewById(R.id.floatingActionButton3);
         //SET
-        if(intent.getStringExtra("valor") != null) {
-            valor.setText(""+intent.getStringExtra("valor"));
-        }else{
-            valor.setText("Valor não Informado!");
-        }
+
         descricao.setText(intent.getStringExtra("nome"));
-        dataOrdem.setText(intent.getStringExtra("ordem"));
-        dataInicioFim.setText(intent.getStringExtra("inicio") + "-" + intent.getStringExtra("fim"));
+
+        dataOrdem.setText(formatDate(intent.getStringExtra("inicio")));
+        dataInicioFim.setText(formatDate(intent.getStringExtra("inicio")) + "-" + formatDate(intent.getStringExtra("fim")));
         situacao.setText(intent.getStringExtra("situacao"));
         percentual.setText(intent.getStringExtra("percentual")+"%");
         avaliacao.setText(intent.getStringExtra("avaliacao"));
@@ -106,7 +108,7 @@ public class DetalhesActivity extends AppCompatActivity {
         model.getObra(intent.getStringExtra("key")).observe(this, obras -> {
             this.obra = obras;
             comments = obra.comentarios;
-
+            funct();
             avaliacao.setText(""+this.obra.avaliacao);
             //carregar();
             carregarListView();
@@ -130,7 +132,6 @@ public class DetalhesActivity extends AppCompatActivity {
                 Comentario com = new Comentario();
                 com.setComentario(editComent.getText().toString());
 
-                Toast.makeText(getApplication(),UsuarioViewModel.logado.nome, Toast.LENGTH_LONG).show();
                 com.usuario = UsuarioViewModel.logado;
 
                 obra.comentarios.add(com);
@@ -167,14 +168,16 @@ public class DetalhesActivity extends AppCompatActivity {
 
     }
 
-    public void carregar(){
-        if(comments==null){
-            comments = new ArrayList<>();
-        }
-        arrayAdapter = new ArrayAdapter<Comentario>(DetalhesActivity.this,android.R.layout.simple_list_item_1, comments);
-        listView.setAdapter(arrayAdapter);
+public void funct(){
+    Locale l = new Locale("pt","BR");
+    Locale.setDefault(l);
+    NumberFormat nf = NumberFormat.getCurrencyInstance(l);
+    if(obra.valor != null) {
+        valor.setText(nf.format(obra.valor));
+    }else{
+        valor.setText("Valor não Informado!");
     }
-
+}
     public void carregarListView(){
         CustomList listAdapter = new
                 CustomList(DetalhesActivity.this, comments);
@@ -187,5 +190,20 @@ public class DetalhesActivity extends AppCompatActivity {
                 //Toast.makeText(DetalhesActivity.this, "You Clicked at " +web[+ position], Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public String formatDate(String dateString){
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = fmt.parse(dateString);
+            SimpleDateFormat fmtOut = new SimpleDateFormat("dd/MM/yyyy");
+            return fmtOut.format(date);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "Data Indisponivel";
     }
 }

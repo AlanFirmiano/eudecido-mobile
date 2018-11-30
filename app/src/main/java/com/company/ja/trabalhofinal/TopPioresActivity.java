@@ -57,7 +57,7 @@ public class TopPioresActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DetalhesActivity.class);
         intent.putExtra("key", selectObra.getKey());
         intent.putExtra("nome", selectObra.getDescricao());
-        intent.putExtra("valor", "R$"+selectObra.getValor());
+        intent.putExtra("valor", selectObra.getValor());
         intent.putExtra("ordem", selectObra.getDataOrdem());
         intent.putExtra("inicio", selectObra.getDataInicio());
         intent.putExtra("fim", selectObra.getDataFim());
