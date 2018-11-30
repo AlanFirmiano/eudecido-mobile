@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:shrinkColumns="*"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TableRow>
+        <TextView
+            android:id="@+id/posicao"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <LinearLayout android:orientation="vertical">
+
+            <TextView
+                android:scrollHorizontally="false"
+                android:id="@+id/descricao"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </TableRow>
+</TableLayout>
