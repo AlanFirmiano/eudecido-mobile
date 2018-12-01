@@ -1,12 +1,18 @@
 package com.company.ja.trabalhofinal;
 
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -18,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.company.ja.trabalhofinal.model.Usuario;
+import com.company.ja.trabalhofinal.service.AlarmeReceiver;
 import com.company.ja.trabalhofinal.viewmodel.ObraViewModel;
 import com.company.ja.trabalhofinal.viewmodel.UsuarioViewModel;
 import com.facebook.AccessToken;
@@ -48,6 +55,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
+    private int STORAGE_PERMISSION_CODE = 1;
+
     private FirebaseAuth mAuth;
     private CallbackManager mCallbackManager;
 
@@ -129,6 +138,7 @@ public class MenuActivity extends AppCompatActivity {
                     public void onSuccess(LoginResult loginResult) {
                         Toast.makeText(getApplicationContext(), "Bem vindo", Toast.LENGTH_LONG).show();
                         getUserFB(loginResult.getAccessToken().getToken(), loginResult.getAccessToken().getUserId());
+                        checkPermission();
                     }
 
                     @Override
@@ -161,6 +171,7 @@ public class MenuActivity extends AppCompatActivity {
                             UsuarioViewModel.logado.id = userId;
                             UsuarioViewModel.logado.nome = userJson.getString("name");
                             UsuarioViewModel.logado.fotoUrl = userJson.getJSONObject("picture").getJSONObject("data").getString("url");
+                            startAlarm();
                         }catch (Exception e){}
                     }
                 }
@@ -220,5 +231,58 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState)
     { super.onSaveInstanceState(outState); mMapView.onSaveInstanceState(outState); }
+
+
+    private static final int REQUEST = 112;
+    public void checkPermission(){
+
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            String[] PERMISSIONS = {android.Manifest.permission.ACCESS_COARSE_LOCATION,android.Manifest.permission.ACCESS_FINE_LOCATION};
+            if (!hasPermissions(getApplication(), PERMISSIONS)) {
+                ActivityCompat.requestPermissions((Activity) MenuActivity.this, PERMISSIONS, REQUEST );
+            } else {
+                //call get location here
+            }
+        } else {
+            //call get location here
+        }
+    }
+
+    private static boolean hasPermissions(Context context, String... permissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //call get location here
+                } else {
+
+                }
+            }
+        }
+    }
+
+
+    public void startAlarm(){
+        Intent intent = new Intent(getApplicationContext(), AlarmeReceiver.class);
+        final PendingIntent pIntent = PendingIntent.getBroadcast(this, AlarmeReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        long firstMillis = System.currentTimeMillis();
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+                (AlarmManager.INTERVAL_HALF_DAY/2), pIntent);
+    }
 
 }
