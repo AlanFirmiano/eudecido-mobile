@@ -153,10 +153,22 @@ public class DetalhesActivity extends AppCompatActivity {
                         if(obra.avaliacoes==null){
                             obra.avaliacoes = new ArrayList<>();
                         }
-                        obra.avaliacoes.add(nova);
+
+                        boolean nExiste = true;
+
+                        for(Avaliacao i : obra.avaliacoes){
+                            if(i.usuario != null && i.usuario.id.equals(nova.usuario.id)){
+                                nExiste = false;
+                                i.valor = nova.valor;
+                            }
+                        }
+
+                        if(nExiste) {
+                            obra.avaliacoes.add(nova);
+                        }
                         L.e("ERRO -> "+obra.avaliacoes.size());
                         model.updateObra(obra);
-                        Toast.makeText(getApplicationContext(), "AVALIAÇÃO -> " + rating, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "AVALIAÇÃO -> " + rating, Toast.LENGTH_LONG).show();
                     }catch (Exception err){
                         Toast.makeText(getApplicationContext(), "Erro na avaliação!", Toast.LENGTH_LONG).show();
                     }
