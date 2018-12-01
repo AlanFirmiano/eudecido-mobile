@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.company.ja.trabalhofinal.listview.ObrasList;
 import com.company.ja.trabalhofinal.model.Obra;
 import com.company.ja.trabalhofinal.viewmodel.ObraViewModel;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
@@ -34,10 +35,7 @@ public class TopMelhoresActivity extends AppCompatActivity {
         ObraViewModel model = ViewModelProviders.of(this).get(ObraViewModel.class);
         model.topObras().observe(this, obras -> {
             this.listObras = obras;
-            listMarkerOptions.clear();
-            arrayAdapter = new ArrayAdapter<Obra>(TopMelhoresActivity.this,android.R.layout.simple_list_item_1, this.listObras);
-
-            listView.setAdapter(arrayAdapter);
+            this.carregarListView();
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -66,5 +64,11 @@ public class TopMelhoresActivity extends AppCompatActivity {
         intent.putExtra("percentual", ""+selectObra.getPercentual());
         intent.putExtra("avaliacao", ""+selectObra.getAvaliacao());
         startActivity(intent);
+    }
+
+    public void carregarListView(){
+        ObrasList listAdapter = new
+                ObrasList(this, listObras);
+        listView.setAdapter(listAdapter);
     }
 }

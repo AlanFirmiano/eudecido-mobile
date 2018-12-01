@@ -29,7 +29,12 @@ public class ObrasList  extends ArrayAdapter<String> {
         TextView txtDesc = (TextView) rowView.findViewById(R.id.descricao);
         Obra obra = obras.get(position);
         txtDesc.setText(obra.descricao);
-        pos.setText(""+position);
+        int p = position + 1;
+        if(position < 9) {
+            pos.setText("0" + p);
+        }else {
+            pos.setText("" + p);
+        }
         return rowView;
     }
 
