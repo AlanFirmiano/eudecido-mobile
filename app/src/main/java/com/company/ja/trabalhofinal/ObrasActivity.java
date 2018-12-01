@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.company.ja.trabalhofinal.listview.CustomList;
+import com.company.ja.trabalhofinal.listview.ObrasList;
 import com.company.ja.trabalhofinal.model.Obra;
 import com.company.ja.trabalhofinal.viewmodel.ObraViewModel;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
@@ -40,9 +42,7 @@ public class ObrasActivity extends AppCompatActivity {
             this.listObras = obras;
             listMarkerOptions.clear();
 
-            arrayAdapter = new ArrayAdapter<Obra>(ObrasActivity.this,android.R.layout.simple_list_item_1, this.listObras);
-
-            listView.setAdapter(arrayAdapter);
+            carregarListView();
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -73,6 +73,12 @@ public class ObrasActivity extends AppCompatActivity {
         intent.putExtra("percentual", ""+selectObra.getPercentual());
         intent.putExtra("avaliacao", ""+selectObra.getAvaliacao());
         startActivity(intent);
+    }
+
+    public void carregarListView(){
+        ObrasList listAdapter = new
+                ObrasList(ObrasActivity.this, listObras);
+        listView.setAdapter(listAdapter);
     }
 
 }
