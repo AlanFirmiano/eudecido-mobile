@@ -47,8 +47,8 @@ public class MonitoramentoIntentService extends IntentService {
     private DatabaseReference mDatabase;
     private DatabaseReference dbRef;
     private List<Obra> obras;
-    private double latitude = 0;
-    private double longitude = 0;
+    private Double latitude = 0.0;
+    private Double longitude = 0.0;
 
     public MonitoramentoIntentService() {
         super("MonitoramentoIntentService");
@@ -66,11 +66,14 @@ public class MonitoramentoIntentService extends IntentService {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if(location == null)
+            return;
         longitude = location.getLongitude();
         latitude = location.getLatitude();
 
-        checkLocation(""+latitude, ""+longitude);
+        if(latitude!=null && longitude!=null)
+            checkLocation(""+latitude, ""+longitude);
 
 
     }

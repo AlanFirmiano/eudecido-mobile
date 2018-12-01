@@ -2,8 +2,10 @@ package com.company.ja.trabalhofinal;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 
 import com.company.ja.trabalhofinal.model.Usuario;
 import com.company.ja.trabalhofinal.service.AlarmeReceiver;
+import com.company.ja.trabalhofinal.service.ComentariosIntentService;
 import com.company.ja.trabalhofinal.viewmodel.ObraViewModel;
 import com.company.ja.trabalhofinal.viewmodel.UsuarioViewModel;
 import com.facebook.AccessToken;
@@ -171,7 +174,9 @@ public class MenuActivity extends AppCompatActivity {
                             UsuarioViewModel.logado.id = userId;
                             UsuarioViewModel.logado.nome = userJson.getString("name");
                             UsuarioViewModel.logado.fotoUrl = userJson.getJSONObject("picture").getJSONObject("data").getString("url");
+                            //Iniciar services
                             startAlarm();
+                            startMonitoramentodeObras();
                         }catch (Exception e){}
                     }
                 }
@@ -233,44 +238,73 @@ public class MenuActivity extends AppCompatActivity {
     { super.onSaveInstanceState(outState); mMapView.onSaveInstanceState(outState); }
 
 
-    private static final int REQUEST = 112;
-    public void checkPermission(){
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    public boolean checkPermission(){
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(this)
+                        .setTitle("Permissão")
+                        .setMessage("Solicito a permissão para acessar o GPS")
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(MenuActivity.this,
+                                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
+                            }
+                        })
+                        .create()
+                        .show();
 
 
-        if (Build.VERSION.SDK_INT >= 23) {
-            String[] PERMISSIONS = {android.Manifest.permission.ACCESS_COARSE_LOCATION,android.Manifest.permission.ACCESS_FINE_LOCATION};
-            if (!hasPermissions(getApplication(), PERMISSIONS)) {
-                ActivityCompat.requestPermissions((Activity) MenuActivity.this, PERMISSIONS, REQUEST );
             } else {
-                //call get location here
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
             }
+            return false;
         } else {
-            //call get location here
+            return true;
         }
-    }
-
-    private static boolean hasPermissions(Context context, String... permissions) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case REQUEST: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //call get location here
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(this,
+                            android.Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                    }
+
                 } else {
 
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+
                 }
+                return;
             }
+
         }
     }
 
@@ -283,6 +317,11 @@ public class MenuActivity extends AppCompatActivity {
         AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
                 (AlarmManager.INTERVAL_HALF_DAY/2), pIntent);
+    }
+
+    void startMonitoramentodeObras(){
+        Intent i = new Intent(getApplication(), ComentariosIntentService.class);
+        getApplication().startService(i);
     }
 
 }

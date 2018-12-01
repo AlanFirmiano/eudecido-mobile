@@ -148,6 +148,7 @@ public class DetalhesActivity extends AppCompatActivity {
                         ratingBar.setRating(rating);
                         Avaliacao nova = new Avaliacao();
                         nova.setValor((double) rating);
+                        nova.usuario = UsuarioViewModel.logado;
                         //obra.setAvaliacao((double) rating);
                         if(obra.avaliacoes==null){
                             obra.avaliacoes = new ArrayList<>();
