@@ -26,9 +26,11 @@ import com.mapquest.android.commoncore.log.L;
 import com.mapquest.mapping.*;
 import com.mapquest.mapping.maps.MapView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity{
     private MapboxMap map;
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity{
                 MarkerOptions markerOption = new MarkerOptions();
                 markerOption.position(new LatLng(ob.latitude,ob.longitude));
                 markerOption.title(ob.descricao);
-                markerOption.snippet("R$ "+ob.valor);
+                markerOption.snippet(funct(ob));
                 listMarkerOptions.add(markerOption);
             }
 
@@ -164,6 +166,17 @@ public class MainActivity extends AppCompatActivity{
             //ERRO IMPOSSIVEL
         }
 
+    }
+
+    public String funct(Obra obra){
+        Locale l = new Locale("pt","BR");
+        Locale.setDefault(l);
+        NumberFormat nf = NumberFormat.getCurrencyInstance(l);
+        if(obra.valor != null) {
+            return nf.format(obra.valor);
+        }else{
+            return "Valor não Informado!";
+        }
     }
 
 //    private void addMarker(MapboxMap mapboxMap) {

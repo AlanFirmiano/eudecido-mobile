@@ -86,7 +86,6 @@ public class MenuActivity extends AppCompatActivity {
 
         CardView mapa = findViewById(R.id.cardMap);
         CardView obras = findViewById(R.id.cardList);
-        CardView conta = findViewById(R.id.cardConta);
         CardView melhor = findViewById(R.id.cardTopM);
         CardView pior = findViewById(R.id.cardTopP);
 
@@ -101,13 +100,6 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 obras();
-            }
-        });
-
-        conta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                conta();
             }
         });
 
@@ -203,11 +195,6 @@ public class MenuActivity extends AppCompatActivity {
 
     public void obras(){
         Intent intent = new Intent(this,ObrasActivity.class);
-        startActivity(intent);
-    }
-
-    public void conta(){
-        Intent intent = new Intent(this,RegisterActivity.class);
         startActivity(intent);
     }
 
